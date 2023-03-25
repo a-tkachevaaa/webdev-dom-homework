@@ -46,12 +46,12 @@
       <div class="add-form">
         <input
           type="text"
-          class="add-form-name"
+          class="add-form-name" 
           placeholder="Введите ваше имя"
         />
         <textarea
           type="textarea"
-          class="add-form-text"
+          class="add-form-text" 
           placeholder="Введите ваш коментарий"
           rows="4"
         ></textarea>
@@ -63,7 +63,48 @@
   </body>
 
   <script>
-    // Код писать здесь
-    console.log("It works!");
-  </script>
-</html>
+   const buttonElement=document.querySelector(".add-form-button");
+    const commentsElement=document.querySelector(".comments");
+    const inputElement=document.querySelector(".add-form-name");
+    const textareaElement=document.querySelector(".add-form-text");
+
+    function time () {
+let myDate = new Date();
+const months = ["01", "02", "03", "04", "05", "06","07", "08", "09", "10", "11", "12"];
+let fullDate = myDate.getDate() + "." + months[myDate.getMonth()] + "." + myDate.getFullYear() + " " + myDate.getHours() +":" + myDate.getMinutes();
+return fullDate;
+}
+
+    buttonElement.addEventListener("click",() => {
+      inputElement.classList.remove("error"), textareaElement.classList.remove("error");
+      //удалить border-color
+      if (inputElement.value==="" && textareaElement.value==="") {
+        /*alert ("Введите ваше имя и комментарий")*/
+        inputElement.classList.add("error"), textareaElement.classList.add("error");
+        //добавить border-color
+        inputElement.value==="", textareaElement.value==="";
+        //удалить текст из полей ввода после отправки
+        return;
+      }
+      
+const oldCommentsHTML=commentsElement.innerHTML;
+commentsElement.innerHTML=oldCommentsHTML +  `<li class="comment">
+          <div class="comment-header">
+            <div>${inputElement.value}</div>
+            <div>${time ()}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${textareaElement.value}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">0</span>
+              <button class="like-button"></button>
+            </div>
+          </div>
+        </li>`
+          });
+          </script>
+          </html>
