@@ -137,5 +137,5 @@ body {
   }
 
   .error{
-    border-color: red;
+    border:  2px solid rgba(240,  49,  26, 0.85);
   }

@@ -76,14 +76,12 @@ return fullDate;
 }
 
     buttonElement.addEventListener("click",() => {
-      inputElement.classList.remove("error"), textareaElement.classList.remove("error");
+      inputElement.classList.remove("error"); textareaElement.classList.remove("error");
       //удалить border-color
-      if (inputElement.value==="" && textareaElement.value==="") {
+      if (inputElement.value==="" || textareaElement.value==="") {
         /*alert ("Введите ваше имя и комментарий")*/
-        inputElement.classList.add("error"), textareaElement.classList.add("error");
+        inputElement.classList.add("error"); textareaElement.classList.add("error");
         //добавить border-color
-        inputElement.value==="", textareaElement.value==="";
-        //удалить текст из полей ввода после отправки
         return;
       }
       
@@ -104,7 +102,9 @@ commentsElement.innerHTML=oldCommentsHTML +  `<li class="comment">
               <button class="like-button"></button>
             </div>
           </div>
-        </li>`
+        </li>`;
+        inputElement.value="";
+         textareaElement.value="";
           });
           </script>
           </html>
