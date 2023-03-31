@@ -35,22 +35,26 @@
     const inputElement=document.querySelector(".add-form-name");
     const textareaElement=document.querySelector(".add-form-text");
     const commentElement=document.querySelectorAll(".comment");
-    const likesCounterElement=document.querySelector(".likes-counter");
-    const likeButtonElement=document.querySelector(".like-button");
-
+  
+    let likesCounterElement=document.querySelectorAll(".likes-counter");
+    let likeButtonElement=document.querySelectorAll(".like-button");
+  
+    /*
+    let likeButtonsElement=document.querySelector(".likes");
+ */
     const comments = [
 {
   name:"Глеб Фокин",
   time:"12.02.22 12:18",
   comment:"Это будет первый комментарий на этой странице",
-  likesCounter:"3",
+  likesCounterElement:"3",
   
 },
 {
   name:"Варвара Н.",
   time:"13.02.22 19:22",
   comment:"Мне нравится как оформлена эта страница! ❤",
-  likesCounter:"75",
+  likesCounterElement:"75",
 },
 ];
 
@@ -68,7 +72,7 @@ return `<li class="comment">
           </div>
           <div class="comment-footer">
             <div class="likes">
-              <span class="likes-counter">${comment.likesCounter}</span>
+              <span class="likes-counter">${comment.likesCounterElement}</span>
               <button class="like-button"></button>
             </div>
           </div>
@@ -77,11 +81,11 @@ return `<li class="comment">
   .join("");
 
   commentsElement.innerHTML = commentsHtml;
+ 
 
 };
 
 renderComments ();
-
 
     function time () {
 let myDate = new Date();
@@ -92,16 +96,16 @@ return fullDate;
 
 function likes () {
 let counter=0
-likesCounter.addEventListener("click",() => {
-  if (counter++) {
-    likeButton.classList.add("add-form-button");
-  }
-  else if (counter--) {
-    likeButton.classList.remove("add-form-button");
-  }
+likeButtonElement.addEventListener("click",() => {
+  counter++
+    likesCounterElement.innerHTML = `${counter}`
+    likeButtonElement.classList.add("add-form-button");
+  counter--
+    likesCounterElement.innerHTML = `${counter}`
+    likeButtonElement.classList.remove("add-form-button");
+
 })
 }
-
 
 
     buttonElement.addEventListener("click",() => {
@@ -118,10 +122,13 @@ likesCounter.addEventListener("click",() => {
   name:inputElement.value,
   time:time (),
   comment:textareaElement.value,
-  likesCounter: likes (),
+  likesCounterElement: 0,
 });
 
 renderComments ();
+let likesCounterElement=document.querySelectorAll(".likes-counter");
+    let likeButtonElement=document.querySelectorAll(".like-button");
+    likes ();
 
         inputElement.value="";
          textareaElement.value="";
