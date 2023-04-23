@@ -36,8 +36,8 @@
     const textareaElement=document.querySelector(".add-form-text");
     const commentElement=document.querySelectorAll(".comment");
   
-    let likesCounterElement=document.querySelectorAll(".likes-counter");
-    let likeButtonElement=document.querySelectorAll(".like-button");
+    const likesCounterElement=document.querySelectorAll(".likes-counter");
+    const likeButtonElements=document.querySelectorAll(".like-button");
   
     /*
     let likeButtonsElement=document.querySelector(".likes");
@@ -47,19 +47,20 @@
   name:"Глеб Фокин",
   time:"12.02.22 12:18",
   comment:"Это будет первый комментарий на этой странице",
-  likesCounterElement:"3",
-  
+  likes:"3",
+  likesStatus:"",
 },
 {
   name:"Варвара Н.",
   time:"13.02.22 19:22",
   comment:"Мне нравится как оформлена эта страница! ❤",
-  likesCounterElement:"75",
+  likes:"75",
+  likesStatus:"",
 },
 ];
 
 const renderComments = () => {
- const commentsHtml = comments.map((comment) => {
+ const commentsHtml = comments.map((comment, index) => {
 return `<li class="comment">
           <div class="comment-header">
             <div>${comment.name}</div>
@@ -71,9 +72,11 @@ return `<li class="comment">
             </div>
           </div>
           <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">${comment.likesCounterElement}</span>
-              <button class="like-button"></button>
+            <div class="likes" data-button="${index}" data-counter="${comment.counter}">
+              <span class="likes-counter" data-counter="${comment.counter}">${comment.likes}</span>
+              <button class="like-button" data-button="${index}"
+              
+              ></button>
             </div>
           </div>
         </li>`;
@@ -82,6 +85,25 @@ return `<li class="comment">
 
   commentsElement.innerHTML = commentsHtml;
  
+  const likeButtonElements=document.querySelectorAll(".like-button");
+
+  for (const likeButtonElement of likeButtonElements) {
+    likeButtonElement.addEventListener ("click", () => {
+      const buttonIndex = likeButtonElement.dataset.button;
+      const counterIndex = likeButtonElement.dataset.counter;
+
+      if (comments [buttonIndex].likeStatus === "") {
+        comments [buttonIndex].likeStatus = '.-active-like';
+        comments [buttonIndex].likes = ++comments [buttonIndex].likes;
+      } else {
+        comments [buttonIndex].likeStatus = "";
+        comments [buttonIndex].likes = --comments [buttonIndex].likes;
+      }
+
+      renderComments ();
+      
+    })
+  }
 
 };
 
@@ -94,20 +116,6 @@ let fullDate = myDate.getDate() + "." + months[myDate.getMonth()] + "." + myDate
 return fullDate;
 }
 
-function likes () {
-let counter=0
-likeButtonElement.addEventListener("click",() => {
-  counter++
-    likesCounterElement.innerHTML = `${counter}`
-    likeButtonElement.classList.add("add-form-button");
-  counter--
-    likesCounterElement.innerHTML = `${counter}`
-    likeButtonElement.classList.remove("add-form-button");
-
-})
-}
-
-
     buttonElement.addEventListener("click",() => {
       inputElement.classList.remove("error"); textareaElement.classList.remove("error");
       //удалить border-color
@@ -117,19 +125,16 @@ likeButtonElement.addEventListener("click",() => {
         //добавить border-color
         return;
       }
-    
+  
       comments.push({
   name:inputElement.value,
   time:time (),
   comment:textareaElement.value,
-  likesCounterElement: 0,
+  likes: 0,
+  likesStatus:"",
 });
 
 renderComments ();
-let likesCounterElement=document.querySelectorAll(".likes-counter");
-    let likeButtonElement=document.querySelectorAll(".like-button");
-    likes ();
-
         inputElement.value="";
          textareaElement.value="";
           });
