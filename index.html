@@ -74,7 +74,7 @@ return `<li class="comment">
           <div class="comment-footer">
             <div class="likes" data-button="${index}" data-counter="${comment.counter}">
               <span class="likes-counter" data-counter="${comment.counter}">${comment.likes}</span>
-              <button class="like-button" data-button="${index}"
+              <button class="like-button ${comment.likesStatus}" data-button="${index}"
               
               ></button>
             </div>
@@ -92,19 +92,19 @@ return `<li class="comment">
       const buttonIndex = likeButtonElement.dataset.button;
       const counterIndex = likeButtonElement.dataset.counter;
 
-      if (comments [buttonIndex].likeStatus === "") {
-        comments [buttonIndex].likeStatus = '.-active-like';
+      if (comments [buttonIndex].likesStatus === "") {
+        comments [buttonIndex].likesStatus = "-active-like";
         comments [buttonIndex].likes = ++comments [buttonIndex].likes;
-      } else {
-        comments [buttonIndex].likeStatus = "";
+      } 
+      else {
+        comments [buttonIndex].likesStatus = "";
         comments [buttonIndex].likes = --comments [buttonIndex].likes;
       }
-
+    
       renderComments ();
       
     })
   }
-
 };
 
 renderComments ();
@@ -130,7 +130,7 @@ return fullDate;
   name:inputElement.value,
   time:time (),
   comment:textareaElement.value,
-  likes: 0,
+  likes: "0",
   likesStatus:"",
 });
 
