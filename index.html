@@ -8,40 +8,7 @@
   <body>
     <div class="container">
       <ul class="comments">
-        <li class="comment">
-          <div class="comment-header">
-            <div>Глеб Фокин</div>
-            <div>12.02.22 12:18</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Это будет первый комментарий на этой странице
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">3</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>
+       <!-- Список рендерится из JS -->
       </ul>
       <div class="add-form">
         <input
@@ -67,6 +34,80 @@
     const commentsElement=document.querySelector(".comments");
     const inputElement=document.querySelector(".add-form-name");
     const textareaElement=document.querySelector(".add-form-text");
+    const commentElement=document.querySelectorAll(".comment");
+  
+    const likesCounterElement=document.querySelectorAll(".likes-counter");
+    const likeButtonElements=document.querySelectorAll(".like-button");
+  
+    /*
+    let likeButtonsElement=document.querySelector(".likes");
+ */
+    const comments = [
+{
+  name:"Глеб Фокин",
+  time:"12.02.22 12:18",
+  comment:"Это будет первый комментарий на этой странице",
+  likes:"3",
+  likesStatus:"",
+},
+{
+  name:"Варвара Н.",
+  time:"13.02.22 19:22",
+  comment:"Мне нравится как оформлена эта страница! ❤",
+  likes:"75",
+  likesStatus:"",
+},
+];
+
+const renderComments = () => {
+ const commentsHtml = comments.map((comment, index) => {
+return `<li class="comment">
+          <div class="comment-header">
+            <div>${comment.name}</div>
+            <div>${comment.time}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${comment.comment}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes" data-button="${index}" data-counter="${comment.counter}">
+              <span class="likes-counter" data-counter="${comment.counter}">${comment.likes}</span>
+              <button class="like-button ${comment.likesStatus}" data-button="${index}"
+              
+              ></button>
+            </div>
+          </div>
+        </li>`;
+  })
+  .join("");
+
+  commentsElement.innerHTML = commentsHtml;
+ 
+  const likeButtonElements=document.querySelectorAll(".like-button");
+
+  for (const likeButtonElement of likeButtonElements) {
+    likeButtonElement.addEventListener ("click", () => {
+      const buttonIndex = likeButtonElement.dataset.button;
+      const counterIndex = likeButtonElement.dataset.counter;
+
+      if (comments [buttonIndex].likesStatus === "") {
+        comments [buttonIndex].likesStatus = "-active-like";
+        comments [buttonIndex].likes = ++comments [buttonIndex].likes;
+      } 
+      else {
+        comments [buttonIndex].likesStatus = "";
+        comments [buttonIndex].likes = --comments [buttonIndex].likes;
+      }
+    
+      renderComments ();
+      
+    })
+  }
+};
+
+renderComments ();
 
     function time () {
 let myDate = new Date();
@@ -76,35 +117,26 @@ return fullDate;
 }
 
     buttonElement.addEventListener("click",() => {
-      inputElement.classList.remove("error"), textareaElement.classList.remove("error");
+      inputElement.classList.remove("error"); textareaElement.classList.remove("error");
       //удалить border-color
-      if (inputElement.value==="" && textareaElement.value==="") {
+      if (inputElement.value==="" || textareaElement.value==="") {
         /*alert ("Введите ваше имя и комментарий")*/
-        inputElement.classList.add("error"), textareaElement.classList.add("error");
+        inputElement.classList.add("error"); textareaElement.classList.add("error");
         //добавить border-color
-        inputElement.value==="", textareaElement.value==="";
-        //удалить текст из полей ввода после отправки
         return;
       }
-      
-const oldCommentsHTML=commentsElement.innerHTML;
-commentsElement.innerHTML=oldCommentsHTML +  `<li class="comment">
-          <div class="comment-header">
-            <div>${inputElement.value}</div>
-            <div>${time ()}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              ${textareaElement.value}
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">0</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>`
+  
+      comments.push({
+  name:inputElement.value,
+  time:time (),
+  comment:textareaElement.value,
+  likes: "0",
+  likesStatus:"",
+});
+
+renderComments ();
+        inputElement.value="";
+         textareaElement.value="";
           });
           </script>
           </html>
