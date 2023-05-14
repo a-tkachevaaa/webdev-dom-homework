@@ -34,7 +34,7 @@
     const commentsElement=document.querySelector(".comments");
     const inputElement=document.querySelector(".add-form-name");
     const textareaElement=document.querySelector(".add-form-text");
-    const commentElement=document.querySelectorAll(".comment");
+    const commentElements=document.querySelectorAll(".comment");
   
     const likesCounterElement=document.querySelectorAll(".likes-counter");
     const likeButtonElements=document.querySelectorAll(".like-button");
@@ -61,7 +61,7 @@
 
 const renderComments = () => {
  const commentsHtml = comments.map((comment, index) => {
-return `<li class="comment">
+return `<li class="comment" data-writer="${comment.name}" data-massege="${comment.comment}">
           <div class="comment-header">
             <div>${comment.name}</div>
             <div>${comment.time}</div>
@@ -72,10 +72,9 @@ return `<li class="comment">
             </div>
           </div>
           <div class="comment-footer">
-            <div class="likes" data-button="${index}" data-counter="${comment.counter}">
-              <span class="likes-counter" data-counter="${comment.counter}">${comment.likes}</span>
+            <div class="likes" data-button="${index}" data-counter="${comment.likes}">
+              <span class="likes-counter" data-counter="${comment.likes}">${comment.likes}</span>
               <button class="like-button ${comment.likesStatus}" data-button="${index}"
-              
               ></button>
             </div>
           </div>
@@ -101,10 +100,22 @@ return `<li class="comment">
         comments [buttonIndex].likes = --comments [buttonIndex].likes;
       }
     
-      renderComments ();
-      
+      renderComments ();  
     })
+    
   }
+
+  const commentElements=document.querySelectorAll(".comment");
+
+      for (const commentEl of commentElements) {
+        commentEl.addEventListener ("click", () => {
+          const target=event.target;
+        const writerEl =commentEl.dataset.writer;
+        const massegeEl =commentEl.dataset.massege;
+        textareaElement.value = `${writerEl}\n ${massegeEl}`
+        })
+      }
+     
 };
 
 renderComments ();
@@ -127,9 +138,13 @@ return fullDate;
       }
   
       comments.push({
-  name:inputElement.value,
+  name:inputElement.value
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;"),
   time:time (),
-  comment:textareaElement.value,
+  comment:textareaElement.value
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;"),
   likes: "0",
   likesStatus:"",
 });
