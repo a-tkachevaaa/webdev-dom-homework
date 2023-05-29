@@ -78,7 +78,7 @@
     const postPhoto = (input,text) => {
       fetch ("https://webdev-hw-api.vercel.app/api/v1/a-tkachevaaa/comments",
       {method: "POST"},
-      {body: JSON.stringify({ text, input })},)
+      {body: JSON.stringify({ input, text })},)
       .then((response) => {
       console.log (response);
       fetchFunction ();
@@ -239,7 +239,7 @@
           .replaceAll("<", "&lt;")
           .replaceAll(">", "&gt;"),
           );
-          
+
       renderComments();
       inputElement.value = "";
       textareaElement.value = "";
